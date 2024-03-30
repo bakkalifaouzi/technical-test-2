@@ -189,6 +189,7 @@ const Activities = ({ date, user, project }) => {
                             </div>
                           </th>
                           {e.detail.map((f, j) => {
+                            
                             return (
                               <Field key={`${e.project} ${j}`} invoiced={e.invoiced} value={f.value || 0} onChange={(a) => onUpdateValue(i, j, parseFloat(a.target.value || 0))} />
                             );
