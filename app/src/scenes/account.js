@@ -10,12 +10,15 @@ import api from "../services/api";
 
 export default () => {
   const user = useSelector((state) => state.Auth.user);
+  {console.log({user})}
+
   const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
     email: user.email,
     name: user.name,
     role: user.role,
     address: user.address,
+    avatar:user.avatar
   });
   const dispatch = useDispatch();
   if (!user) return <Loader />;
@@ -26,6 +29,7 @@ export default () => {
     let body = values;
     try {
       const responseData = await api.put(`/user/${user._id}`, body);
+
       toast.success("Updated!");
       dispatch(setUser(responseData.user));
     } catch (e) {
@@ -33,6 +37,7 @@ export default () => {
       toast.error("Some Error!");
     }
     setIsLoading(false);
+
   }
 
   return (
@@ -49,7 +54,7 @@ export default () => {
               </div>
               <div className="w-full md:w-[48.5%]">
                 <div>Email</div>
-                <input className="projectsInput" value={values.email} />
+                <input className="projectsInput" value={values.email} onChange={(e) => setValues({ ...values, email: e.target.value })} />
               </div>
             </div>
             {/* second Row */}
@@ -58,6 +63,11 @@ export default () => {
                 <div>Address</div>
                 <textarea className="projectsInput h-auto py-2" name="address" value={values.address} onChange={(e) => setValues({ ...values, address: e.target.value })} />
               </div>
+              <div className="w-full md:w-[48.5%]">
+                <div>Photo</div>
+                <input className="projectsInput h-auto py-2" name="avatar" value={values.avatar} onChange={(e) => setValues({ ...values, avatar: e.target.value })} />
+              </div>
+
             </div>
             <hr className="my-4" />
             <div className="flex justify-end">
