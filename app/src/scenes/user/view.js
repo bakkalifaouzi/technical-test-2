@@ -18,7 +18,6 @@ export default () => {
   }, []);
 
   if (!user) return <Loader />;
-
   return (
     <div>
       <div className="appContainer pt-24">
@@ -39,6 +38,12 @@ const Detail = ({ user }) => {
     history.push(`/user`);
   }
 
+  const isNonNegative = (value)=>{
+    return value >= 0;
+  }
+
+
+
   return (
     <Formik
       initialValues={user}
@@ -52,6 +57,14 @@ const Detail = ({ user }) => {
         }
       }}>
       {({ values, handleChange, handleSubmit, isSubmitting }) => {
+
+        const handleInputChange = (e) => {
+          const inputValue = (e.target.value);
+          if (isNonNegative(inputValue)) {
+            handleChange(e);
+          }
+        }
+        
         return (
           <React.Fragment>
             <div className="flex justify-between flex-wrap mt-4">
@@ -87,6 +100,14 @@ const Detail = ({ user }) => {
                   onChange={handleChange}
                 />
               </div>
+
+              <div className="w-full md:w-[260px] mt-[10px] md:mt-0">
+                <div className="text-[14px] text-[#212325] font-medium	">Availability</div>
+                <select className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" type="select" name="availability" value={values.availability} onChange={handleChange}>
+                  <option value="available">Available</option>
+                  <option value="not available">Not Available</option>
+                </select>
+              </div>
             </div>
 
             <div className="flex flex-wrap justify-between mt-4">
@@ -97,7 +118,7 @@ const Detail = ({ user }) => {
                   type="number"
                   name="days_worked"
                   value={values.days_worked}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />{" "}
               </div>
               <div className="w-full md:w-[260px] ">
@@ -107,7 +128,7 @@ const Detail = ({ user }) => {
                   type="number"
                   name="costPerDay"
                   value={values.costPerDay}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
               <div className="w-full md:w-[260px] ">
@@ -117,7 +138,7 @@ const Detail = ({ user }) => {
                   type="number"
                   name="sellPerDay"
                   value={values.sellPerDay}
-                  onChange={handleChange}
+                  onChange={handleInputChange}
                 />
               </div>
             </div>
@@ -132,7 +153,7 @@ const Detail = ({ user }) => {
             </div>
 
             <div className="flex  mt-2">
-              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onChange={handleSubmit}>
+              <LoadingButton className="bg-[#0560FD] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" loading={isSubmitting} onClick={handleSubmit}>
                 Update
               </LoadingButton>
               <button className="ml-[10px] bg-[#F43F5E] text-[16px] font-medium text-[#FFFFFF] py-[12px] px-[22px] rounded-[10px]" onClick={deleteData}>
